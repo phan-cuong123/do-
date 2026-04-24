@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNI FOOD - Giao đồ ăn tận nơi</title>
+   
+    <link href="https://fonts.googleapis.com/css?family=Inter:400,600,700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Kanit:400,700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Rubik+Bubbles&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,900&display=swap" rel="stylesheet" />
+    <link href="./css/style-new.css" rel="stylesheet" />
+
+    <style>
+        
+        .promo-banners {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+        .promo-banners img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+        .promo-banners img:hover { transform: scale(1.02); }
+
+        .food-card {
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .food-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+        .food-card .card-img {
+            width: 100%;
+            height: 180px;
+            overflow: hidden;
+            position: relative;
+        }
+        .food-card .card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .food-card:hover .card-img img { transform: scale(1.1); }
+
+        .popular-list .list-item img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+            flex-shrink: 0;
+        }
+
+        .category-list {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 20px 0;
+        }
+        
+        .cat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .cat-item img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 8px;
+            background: #f9f9f9;
+            padding: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .cat-item:hover {
+            transform: translateY(-5px);
+            color: #ee4d2d;
+        }
+        .cat-item:hover img {
+            box-shadow: 0 4px 10px rgba(238, 77, 45, 0.3);
+            border: 2px solid #ee4d2d;
+        }
+
+        .badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            color: #fff;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 700;
+            z-index: 2;
+            text-transform: uppercase;
+        }
+        .badge.favorite { background-color: #ee4d2d; }
+        .badge.partner { background-color: #f53d2d; }
+
+        .card-stats {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            margin-top: 8px;
+            color: #333;
+        }
+        .star-rating {
+            display: flex;
+            align-items: center;
+            color: #ffc107;
+            font-weight: bold;
+        }
+        .star-icon { margin-right: 4px; }
+        .dot { margin: 0 6px; color: #999; font-weight: bold; }
+        .info-txt { color: #555; font-weight: 500; }
+
+        .card-info { padding: 12px; }
+        .card-info h3 {
+            margin-bottom: 4px;
+            font-size: 16px;
+            white-space: nowrap; 
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .address {
+            font-size: 13px;
+            color: #777;
+            margin-bottom: 8px;
+            white-space: nowrap; 
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        body > button { display: none; }
+        .food-card-link { display: block; text-decoration: none; color: inherit; }
+    </style>
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="container">
+            <div class="top-bar">
+                <div class="logo">
+                    <span class="logo-text">UNI FOOD</span>
+                </div>
+                
+                <div class="search-bar">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" placeholder="Tìm Kiếm tại đây...">
+                </div>
+
+                <a class="btn-login" href="dangnhap.html">Đăng nhập</a>
+            </div>
+
+            <nav class="location-nav">
+                <ul>
+                    <li class="active">Việt Nam</li>
+                    <li>Châu Âu</li>
+                    <li>Châu Á</li>
+                    <li>Châu Úc</li>
+                    <li>Châu Mỹ</li>
+                    <li>Châu Phi</li>
+                </ul>
+            </nav>
+
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#" class="active">Trang chủ</a></li>
+                    <li><a href="#">Món ăn</a></li>
+                    <li><a href="#">Khuyến Mãi</a></li>
+                    <li><a href="#">Khám phá</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+      
+        <section class="hero-section">
+            <div class="container">
+               
+                <div class="hero-bg">
+                    <img src="./images/v1_61.png" alt="Banner Food" style="width:100%; height:300px; object-fit:cover; border-radius:10px;">
+                </div>
+                <h1 class="hero-title">NHÀ CUNG CẤP BỮA ĂN NHANH LỚN NHẤT VINH</h1>
+                
+                <div class="promo-banners">
+                    <img src="./images/v1_74.png" alt="Promo 1">
+                    <img src="./images/v1_73.png" alt="Promo 2">
+                    <img src="./images/v1_72.png" alt="Promo 3">
+                    <img src="./images/v1_71.png" alt="Promo 4">
+                </div>
+            </div>
+        </section>
+
+        <section class="category-section">
+            <div class="container">
+                <div class="category-list">
+                    <a href="./trangphu.html" class="cat-item">
+                        <img src="./images/v1_98.png" alt="Tất cả">
+                        <span>Tất cả</span>
+                    </a>
+                    <a href="nuong.html" class="cat-item">
+                        <img src="./images/v1_129.png" alt="Nướng">
+                        <span>Nướng</span>
+                    </a>
+                    <a href="doan.html" class="cat-item">
+                        <img src="./images/v1_61.png" alt="Đồ ăn">
+                        <span>Đồ ăn</span>
+                    </a>
+                    <a href="douong.html" class="cat-item">
+                        <img src="./images/v1_312.png" alt="Đồ uống">
+                        <span>Đồ uống</span>
+                    </a>
+                    <a href="dochay.html" class="cat-item">
+                        <img src="./images/v1_115.png" alt="Đồ chay">
+                        <span>Đồ chay</span>
+                    </a>
+                    <a href="banhkem.html" class="cat-item">
+                        <img src="./images/v1_549.png" alt="Bánh kem">
+                        <span>Bánh kem</span>
+                    </a>
+                    <a href="trangmieng.html" class="cat-item">
+                        <img src="./images/v1_142.png" alt="Tráng miệng">
+                        <span>Tráng miệng</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    
+        <section class="restaurant-grid-section">
+            <div class="container">
+                <div class="grid-container">
+                 
+                    <a href="trangphu.html" class="food-card-link">
+                    <div class="food-card">
+                        <div class="card-img">
+                            <span class="badge favorite">Yêu thích</span>
+                            <img src="./images/v1_382.png" alt="Lu Yu Tea">
+                        </div>
+                        <div class="card-info">
+                            <h3>Lu Yu Tea - Trà Sữa Olong</h3>
+                            <p class="address">24 Thạch Lam, P. Phú Thạnh...</p>
+                            
+                            <div class="card-stats">
+                                <span class="star-rating"><span class="star-icon">⭐</span> 4.9</span>
+                                <span class="dot">•</span>
+                                <span class="info-txt">20 phút</span>
+                                <span class="dot">•</span>
+                                <span class="info-txt">1.2km</span>
+                            </div>
+                        </div>
+                    </div>
+                    </a>
+
+                    <a href="trangphu.html" class="food-card-link">
+                    <div class="food-card">
+                        <div class="card-img">
+                             <span class="badge partner">Partner</span>
+                            <img src="./images/v1_115.png" alt="Emy Fruit">
+                        </div>
+                        <div class="card-info">
+                            <h3>Emy - Trái Cây Tươi</h3>
+                            <p class="address">212A/A37 Nguyễn Trãi...</p>
+                            
+                            <div class="card-stats">
+                                <span class="star-rating"><span class="star-icon">⭐</span> 4.8</span>
+                                <span class="dot">•</span>
+                                <span class="info-txt">15 phút</span>
+                                <span class="dot">•</span>
+                                <span class="info-txt">0.5km</span>
+                            </div>
+                        </div>
+                    </div>
+                    </a>
+
+                    <a href="trangphu.html" class="food-card-link">
+                    <div class="food-card">
+                        <div class="card-img">
+                            <span class="badge favorite">Yêu thích</span>
+                            <img src="./images/v1_129.png" alt="Cơm Thố Bụi">
+                        </div>
+                        <div class="card-info">
+                            <h3>Cơm Thố Bụi</h3>
+                            <p class="address">12 Nguyễn Sơn Hà...</p>
+                            
+                             <div class="card-stats">
+                                <span class="star-rating"><span class="star-icon">⭐</span> 4.5</span>
+                                <span class="dot">•</span>
+                                <span class="info-txt">25 phút</span>
+                                <span class="dot">•</span>
+                                <span class="info-txt">2.1km</span>
+                            </div>
+                        </div>
+                    </div>
+                    </a>
+
+                    <a href="trangphu.html" class="food-card-link">
+                    <div class="food-card">
+                        <div class="card-img">
+                             <span class="badge partner">Partner</span>
+                            <img src="./images/v1_210.png" alt="Thành Đạt">
+                        </div>
+                        <div class="card-info">
+                            <h3>Thành Đạt - Hủ Tiếu Nam Vang</h3>
+                            <p class="address">22C Nguyễn Hữu Cầu...</p>
+                            
+                             <div class="card-stats">
+                                <span class="star-rating"><span class="star-icon">⭐</span> 4.7</span>
+                                <span class="dot">•</span>
+                                <span class="info-txt">30 phút</span>
+                                <span class="dot">•</span>
+                                <span class="info-txt">3.5km</span>
+                            </div>
+                        </div>
+                    </div>
+                    </a>
+
+                    <a href="trangphu.html" class="food-card-link">
+                    <div class="food-card">
+                        <div class="card-img">
+                             <span class="badge favorite">Yêu thích</span>
+                            <img src="./images/v1_155.png" alt="Bánh Tráng Cô Sương">
+                        </div>
+                        <div class="card-info">
+                            <h3>Bánh Tráng Cô Sương</h3>
+                            <p class="address">2G Phùng Văn Cung...</p>
+                            
+                             <div class="card-stats">
+                                <span class="star-rating"><span class="star-icon">⭐</span> 5.0</span>
+                                <span class="dot">•</span>
+                                <span class="info-txt">10 phút</span>
+                                <span class="dot">•</span>
+                                <span class="info-txt">0.8km</span>
+                            </div>
+                        </div>
+                    </div>
+                    </a>
+
+                    <a href="trangphu.html" class="food-card-link">
+                    <div class="food-card">
+                        <div class="card-img">
+                            <span class="badge partner">Partner</span>
+                            <img src="./images/v1_169.png" alt="Chân Gà Sốt Thái">
+                        </div>
+                        <div class="card-info">
+                            <h3>Chân Gà Sốt Thái & Gỏi</h3>
+                            <p class="address">304/61 Bùi Đình Tuý...</p>
+                            
+                             <div class="card-stats">
+                                <span class="star-rating"><span class="star-icon">⭐</span> 4.6</span>
+                                <span class="dot">•</span>
+                                <span class="info-txt">40 phút</span>
+                                <span class="dot">•</span>
+                                <span class="info-txt">4.2km</span>
+                            </div>
+                        </div>
+                    </div>
+                    </a>
+                    
+                     <a href="trangphu.html" class="food-card-link">
+                     <div class="food-card">
+                        <div class="card-img">
+                            <span class="badge favorite">Yêu thích</span>
+                            <img src="./images/v1_182.png" alt="Cháo Sườn Phong">
+                        </div>
+                        <div class="card-info">
+                            <h3>Cháo Sườn Phong</h3>
+                            <p class="address">1054/15/1 Cách Mạng Tháng 8...</p>
+                            
+                             <div class="card-stats">
+                                <span class="star-rating"><span class="star-icon">⭐</span> 4.2</span>
+                                <span class="dot">•</span>
+                                <span class="info-txt">18 phút</span>
+                                <span class="dot">•</span>
+                                <span class="info-txt">1.5km</span>
+                            </div>
+                        </div>
+                    </div>
+                    </a>
+                     
+                     <a href="trangphu.html" class="food-card-link">
+                     <div class="food-card">
+                        <div class="card-img">
+                             <span class="badge partner">Partner</span>
+                            <img src="./images/v1_394.png" alt="Cháo Ếch Singapore">
+                        </div>
+                        <div class="card-info">
+                            <h3>Cháo Ếch Singapore 19</h3>
+                            <p class="address">1054/15/1A Cách Mạng Tháng 8...</p>
+                            
+                             <div class="card-stats">
+                                <span class="star-rating"><span class="star-icon">⭐</span> 4.9</span>
+                                <span class="dot">•</span>
+                                <span class="info-txt">22 phút</span>
+                                <span class="dot">•</span>
+                                <span class="info-txt">1.8km</span>
+                            </div>
+                        </div>
+                    </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        
+        <section class="popular-section">
+            <div class="container">
+                <h2 class="section-title">Các món ăn phổ biến</h2>
+                
+                <div class="filter-tabs">
+                    <span class="tab active">Mới nhất</span>
+                    <span class="tab">Gần tôi</span>
+                    <span class="tab">Đã lưu</span>
+                    <select class="filter-select"><option>- Quận/Huyện -</option></select>
+                    <select class="filter-select"><option>- Ẩm thực -</option></select>
+                    <select class="filter-select"><option>- Danh mục -</option></select>
+                </div>
+
+                <div class="popular-list">
+                  
+                    <div class="list-item">
+                        <img src="./images/v1_210.png" alt="KFC"> 
+                        <div class="item-details">
+                            <h4>Gà Rán KFC - Bến Xóm Củi</h4>
+                            <p>48 - 50 Cần Giuộc, P. 13, Quận 8...</p>
+                        </div>
+                    </div>
+                     
+                     <div class="list-item">
+                        <img src="./images/v1_62.png" alt="Popeyes">
+                        <div class="item-details">
+                            <h4>Gà Rán Popeyes - Lê Đại Hành</h4>
+                            <p>397A Lê Đại Hành, P. 11, Quận 11...</p>
+                        </div>
+                    </div>
+                   
+                    <div class="list-item">
+                        <img src="./images/v1_224.png" alt="Chè Kỳ Đồng">
+                        <div class="item-details">
+                            <h4>Chè Kỳ Đồng</h4>
+                            <p>16C Kỳ Đồng, P. 9, Quận 3...</p>
+                        </div>
+                    </div>
+                    
+                    <div class="list-item">
+                        <img src="./images/v1_210.png" alt="Bún Riêu">
+                        <div class="item-details">
+                            <h4>Bún Riêu Trung Kiên</h4>
+                            <p>27 Bế Văn Đàn, P. 14, Quận Tân Bình...</p>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <img src="./images/v1_210.png" alt="KFC"> 
+                        <div class="item-details">
+                            <h4>Gà Rán KFC - Bến Xóm Củi</h4>
+                            <p>48 - 50 Cần Giuộc, P. 13, Quận 8...</p>
+                        </div>
+                    </div>
+                     
+                     <div class="list-item">
+                        <img src="./images/v1_62.png" alt="Popeyes">
+                        <div class="item-details">
+                            <h4>Gà Rán Popeyes - Lê Đại Hành</h4>
+                            <p>397A Lê Đại Hành, P. 11, Quận 11...</p>
+                        </div>
+                    </div>
+                   
+                    <div class="list-item">
+                        <img src="./images/v1_224.png" alt="Chè Kỳ Đồng">
+                        <div class="item-details">
+                            <h4>Chè Kỳ Đồng</h4>
+                            <p>16C Kỳ Đồng, P. 9, Quận 3...</p>
+                        </div>
+                    </div>
+                    
+                    <div class="list-item">
+                        <img src="./images/v1_210.png" alt="Bún Riêu">
+                        <div class="item-details">
+                            <h4>Bún Riêu Trung Kiên</h4>
+                            <p>27 Bế Văn Đàn, P. 14, Quận Tân Bình...</p>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <img src="./images/v1_210.png" alt="KFC"> 
+                        <div class="item-details">
+                            <h4>Gà Rán KFC - Bến Xóm Củi</h4>
+                            <p>48 - 50 Cần Giuộc, P. 13, Quận 8...</p>
+                        </div>
+                    </div>
+                     
+                     <div class="list-item">
+                        <img src="./images/v1_62.png" alt="Popeyes">
+                        <div class="item-details">
+                            <h4>Gà Rán Popeyes - Lê Đại Hành</h4>
+                            <p>397A Lê Đại Hành, P. 11, Quận 11...</p>
+                        </div>
+                    </div>
+                   
+                    <div class="list-item">
+                        <img src="./images/v1_224.png" alt="Chè Kỳ Đồng">
+                        <div class="item-details">
+                            <h4>Chè Kỳ Đồng</h4>
+                            <p>16C Kỳ Đồng, P. 9, Quận 3...</p>
+                        </div>
+                    </div>
+                    
+                    <div class="list-item">
+                        <img src="./images/v1_210.png" alt="Bún Riêu">
+                        <div class="item-details">
+                            <h4>Bún Riêu Trung Kiên</h4>
+                            <p>27 Bế Văn Đàn, P. 14, Quận Tân Bình...</p>
+                        </div>
+                    </div>
+
+                    <div class="view-more-btn">
+                        <span>Xem thêm</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+        <section class="app-stats-section">
+            <div class="container">
+                <div class="app-promo">
+                    <h2>Tìm địa điểm trên đường đi? Tải UNIFOOD!</h2>
+                    <div class="app-buttons">
+                        <div class="app-btn ios"><img src="./images/v1_584.png" alt="iOS"></div>
+                        <div class="app-btn android"><img src="./images/v1_588.png" alt="Android"></div>
+                        <div class="app-btn windows"><img src="./images/v1_592.png" alt="Windows"></div>
+                    </div>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-num">334,384</span>
+                        <span class="stat-label">Địa điểm toàn quốc</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-num">38,630,265</span>
+                        <span class="stat-label">Người sử dụng</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-num">1,481,841</span>
+                        <span class="stat-label">Bình luận</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-num">10,232,333</span>
+                        <span class="stat-label">Hình ảnh</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+   
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-cols">
+                <div class="footer-col">
+                    <h3>Khám phá</h3>
+                    <ul>
+                        <li><a href="#">Ứng dụng Mobile</a></li>
+                        <li><a href="#">Tạo bộ sưu tập</a></li>
+                        <li><a href="#">Bảo mật thông tin</a></li>
+                        <li><a href="#">Quy định</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Công ty</h3>
+                    <ul>
+                        <li><a href="#">Giới thiệu</a></li>
+                        <li><a href="#">Trợ giúp</a></li>
+                        <li><a href="#">Việc làm</a></li>
+                        <li><a href="#">Liên hệ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Tham gia trên</h3>
+                    <ul class="social-links">
+                        <li><a href="#">Facebook</a></li>
+                        <li><a href="#">Instagram</a></li>
+                        <li><a href="#">Youtube</a></li>
+                        <li><a href="#">Google</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col license">
+                    <h3>Giấy phép</h3>
+                    <p>MXH 363/GP-BTTTT</p>
+                    <img src="./images/v1_642.png" alt="Đã đăng ký bộ công thương">
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>Công Ty Cổ Phần Foody, Lầu G, Tòa nhà Jabes 1, 244 đường Cống Quỳnh, phường Phạm Ngũ Lão, Quận 1, TP.HCM</p>
+                <p>Email: cskh@support.shopeefood.vn</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
